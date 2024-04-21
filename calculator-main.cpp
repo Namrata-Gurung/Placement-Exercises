@@ -134,8 +134,13 @@ public:
         case Tokeniser::Type::multiply:
             return tokens.lhs * tokens.rhs;
         case Tokeniser::Type::divide:
-            return tokens.lhs / tokens.rhs;
+        if (tokens.rhs != 0) // to avoid divison by zero when using integers
+        return tokens.lhs/tokens.rhs;
+        else{
+            std::cout << "Error, there is division by zero"<< std::endl; 
+        }
         default:
+            std::cout << "Error, operator is not correct"; 
             break;
         }
 
