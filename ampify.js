@@ -1,15 +1,17 @@
+const axios = require('axios').default
+
 async function fetchData(url){
     try{
         //Making a GET request  
         const response = await axios.get(url);
 
-        //Assuming the JSON data is stored in a variable named jsonData 
+        //Assuming the JSON data is stored in a variable named data 
         const  data = response.data;
 
         //Extract the packs array 
         const packs = data.packs;
 
-        //intialise empty array to hold all genres 
+        //Initialize empty array to hold all genres 
         let allGenres = [];
 
         //Iterate over each pack to collect all genres 
@@ -18,13 +20,15 @@ async function fetchData(url){
         });
 
         //Remove duplicates and sort the genres 
-        const uniqueSortedGenres = [...new setInterval(allGenres)].sort();
+        const uniqueSortedGenres = [...new Set(allGenres)].sort();
 
+        console.log("List of all genres:");
         console.log(uniqueSortedGenres);
 
         const hiphopPacks = packs.filter(pack => pack.genres.includes("hip-hop" )) ;
 
         // Print out the list of all the packs in the genre "hip-hop" 
+        console.log("\nList of packs in the genre 'hip-hop':");
         console.log(hiphopPacks);
     }catch (error){
         //Handling errors 
