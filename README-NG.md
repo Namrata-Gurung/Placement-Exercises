@@ -42,3 +42,9 @@ How to compile and run the software:
 - To run the script, enter 'node.ampify.js' in the terminal. This should give the output of: a list of all the genres and list of packs in the genre hip-hop.
 
 Resources used:
+https://code.visualstudio.com/docs/nodejs/nodejs-tutorial
+https://nodejs.org/en
+https://stackoverflow.com/questions/55374755/node-js-axios-download-file-stream-and-writefile
+https://bobbyhadz.com/blog/download-file-using-axios
+https://medium.com/@41x3n/scraping-a-website-and-downloading-files-with-node-js-using-axios-and-cheerio-7bbb003f6064
+
