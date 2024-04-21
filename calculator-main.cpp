@@ -7,6 +7,7 @@
 #include <cassert>
 #include <cmath>
 
+
 class Tokeniser
 {
 public:
@@ -78,7 +79,8 @@ private:
         if (find(input, "+")) return Type::add;
         if (find(input, "-")) return Type::subtract;
         if (find(input, "*")) return Type::multiply;
-        if (find(input, "/")) return Type::divide;
+        if (find(input, "/")) return Type::divide; // divide is recognised as a token
+        if (find(input, "pi")) return Type::pi; //pi is recognised as a token 
 
         return Type::unknown;
     }
@@ -95,6 +97,10 @@ private:
             return result;
 
         if (auto result = findAndExtractLHS(input, "/"))
+            return result;
+        
+        if(find(input, "pi"))
+           return;
 
         return {};
     }
@@ -139,7 +145,7 @@ public:
         case Tokeniser::Type::divide:
             return tokens.lhs / tokens.rhs;
         case Tokeniser::Type::pi:
-        return pi;
+            return tokens.lhs * tokens.rhs;
         default:
             std::cout << "Invalid Operator";
             break;
@@ -222,11 +228,17 @@ void test()
     ResultChecker::check(result->rhs, 9);
     assert(result->type == Tokeniser::Type::divide);
 
+    result = Tokeniser().tokenise("pi*5");
+    assert(result.has_value());
+    ResultChecker::check(result->lhs, pi);
+    ResultChecker::check(result->rhs, 5);
+    assert(result->type == Tokeniser::Type::divide);
+
     ResultChecker::check(Calculator().calculate({ 10, 4, Tokeniser::Type::multiply }), 40);
     ResultChecker::check(Calculator().calculate({ 25.3, 18.6, Tokeniser::Type::add }), 43.9);
     ResultChecker::check(Calculator().calculate({ 3, 5.6, Tokeniser::Type::subtract }), 2.6);
     ResultChecker::check(Calculator().calculate({ 7, 9, Tokeniser::Type::divide }), 8);
-}
+    ResultChecker::check(Calculator().calculate({ pi, 5, Tokeniser::Type::pi }), 15.70796);
 
 void run()
 {
