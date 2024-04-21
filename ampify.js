@@ -1,4 +1,4 @@
-const axios = require('axios').default
+const axios = require('axios').default //import axios library 
 
 async function fetchData(url){
     try{
