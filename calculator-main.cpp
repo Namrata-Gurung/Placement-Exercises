@@ -134,6 +134,7 @@ public:
             return tokens.lhs * tokens.rhs;
         case Tokeniser::Type::divide:
         default:
+            std::cout << "Invalid Operator";
             break;
         }
 
@@ -190,23 +191,29 @@ public:
 
 void test()
 {
-    auto result = Tokeniser().tokenise("6*9");
+    auto result = Tokeniser().tokenise("10*4");
+    assert(result.has_value());
+    ResultChecker::check(result->lhs, 10);
+    ResultChecker::check(result->rhs, 4);
+    assert(result->type == Tokeniser::Type::multiply);
+
+    result = Tokeniser().tokenise("25.3 + 18.6");
     assert(result.has_value());
     ResultChecker::check(result->lhs, 6);
     ResultChecker::check(result->rhs, 9);
-    assert(result->type == Tokeniser::Type::multiply);
+    assert(result->type == Tokeniser::Type::add);
 
-    result = Tokeniser().tokenise("6 * 9");
-    assert(result.has_value());
-    ResultChecker::check(result->lhs, 6);
-    ResultChecker::check(result->rhs, 9);
-    assert(result->type == Tokeniser::Type::multiply);
-
-    result = Tokeniser().tokenise("25 * 4");
+    result = Tokeniser().tokenise("3 - 5.6");
     assert(result.has_value());
     ResultChecker::check(result->lhs, 25);
     ResultChecker::check(result->rhs, 4);
-    assert(result->type == Tokeniser::Type::multiply);
+    assert(result->type == Tokeniser::Type::subtract);
+
+    result = Tokeniser().tokenise("25 / 4");
+    assert(result.has_value());
+    ResultChecker::check(result->lhs, 25);
+    ResultChecker::check(result->rhs, 4);
+    assert(result->type == Tokeniser::Type::divide);
 
     ResultChecker::check(Calculator().calculate({ 10, 4, Tokeniser::Type::multiply }), 40);
     ResultChecker::check(Calculator().calculate({ 25.3, 18.6, Tokeniser::Type::add }), 43.9);
