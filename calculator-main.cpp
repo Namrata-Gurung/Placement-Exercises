@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdlib>
 #include <cassert>
+#include <cmath>
 
 class Tokeniser
 {
@@ -16,6 +17,7 @@ public:
         subtract,
         multiply,
         divide,
+        pi,
 
         unknown,
     };
@@ -119,6 +121,8 @@ class Calculator
 {
 public:
 
+     static const double pi;
+
     Calculator() = default;
     ~Calculator() = default;
 
@@ -133,6 +137,7 @@ public:
         case Tokeniser::Type::multiply:
             return tokens.lhs * tokens.rhs;
         case Tokeniser::Type::divide:
+            return tokens.lhs / tokens.rhs;
         default:
             std::cout << "Invalid Operator";
             break;
@@ -209,15 +214,16 @@ void test()
     ResultChecker::check(result->rhs, 4);
     assert(result->type == Tokeniser::Type::subtract);
 
-    result = Tokeniser().tokenise("25 / 4");
+    result = Tokeniser().tokenise("72 / 9");
     assert(result.has_value());
-    ResultChecker::check(result->lhs, 25);
-    ResultChecker::check(result->rhs, 4);
+    ResultChecker::check(result->lhs, 72);
+    ResultChecker::check(result->rhs, 9);
     assert(result->type == Tokeniser::Type::divide);
 
     ResultChecker::check(Calculator().calculate({ 10, 4, Tokeniser::Type::multiply }), 40);
     ResultChecker::check(Calculator().calculate({ 25.3, 18.6, Tokeniser::Type::add }), 43.9);
     ResultChecker::check(Calculator().calculate({ 3, 5.6, Tokeniser::Type::subtract }), 2.6);
+    ResultChecker::check(Calculator().calculate({ 3, 5.6, Tokeniser::Type::divide }), 8);
 }
 
 void run()
