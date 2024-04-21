@@ -4,8 +4,7 @@
 #include <optional>
 #include <string>
 #include <cstdlib>
-
-const float pi;
+#include <cassert>
 
 class Tokeniser
 {
